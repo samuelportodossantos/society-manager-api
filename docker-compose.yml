@@ -1,0 +1,28 @@
+version: '3'
+services:
+  api:
+    container_name: api
+    build: .
+    user: "${UID}:${GID}"
+    ports:
+      - "8080:${APP_PORT}"
+    volumes:
+      - .:/usr/app
+      - /usr/app/node_modules
+    command: npm run dev
+    networks:
+      - society_network
+  db:
+    container_name: db
+    image: mysql:latest
+    volumes:
+      - ./database:/var/lib/mysql
+    ports:
+      - ${DB_PORT}:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_DBSA}
+    networks:
+      - society_network
+networks:
+  society_network:
