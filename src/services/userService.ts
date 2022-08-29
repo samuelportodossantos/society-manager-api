@@ -15,7 +15,7 @@ export default class UserService {
     public async login(username:string, password:string):Promise<RestResponse> {
         let response : RestResponse = {
             message: "User authenticated successfuly!",
-            data: [],
+            data: {},
             status: "success"
         }
         const users = new UserModel().getModel()
@@ -25,8 +25,9 @@ export default class UserService {
         if ( user !== null ) {
             response.data = user.dataValues
         } else {
-            response.message = "Wrong username or password, or user does't exitsts"
+            response.message = "Wrong username or password, or user does't exists"
             response.status = 'error'
+            response.data = {username, password}
         }        
         return response;
     }
