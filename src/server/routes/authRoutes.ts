@@ -9,7 +9,7 @@ authRoutes.use((req, res, next) => {
 
 authRoutes.post('/login', async (req, res) => {
     const userService = new UserService()     
-    const loginResult = await userService.login(req.body.username, req.body.password)
+    const loginResult = await userService.login(req.body?.username, req.body?.password)
     const secret = process.env.APP_SECRET || ''
     const token = jwt.sign({
         data: Date.now().toString()
