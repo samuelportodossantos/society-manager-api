@@ -2,6 +2,7 @@ import express from "express"
 
 import authRoutes from "./routes/authRoutes"
 import userRoutes from "./routes/userRoutes"
+import cors from 'cors'
 
 export default class Server {
     
@@ -16,6 +17,8 @@ export default class Server {
     }
 
     public run () {
+        this.App.use(cors())
+        this.App.use(express.json())
         this.setRoutes()
         this.App.listen(this.PORT, () => {
             console.log(this.runMessage)

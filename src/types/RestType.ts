@@ -1,4 +1,5 @@
 export type RestResponse = {
-    message: string
+    message: string,
+    status: string,
     data: []
 }
