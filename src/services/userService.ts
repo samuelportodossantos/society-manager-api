@@ -1,5 +1,6 @@
 import { RestResponse } from "../types/RestType";
 import UserModel from "../db/Schemes/UserModel";
+import bcrypt from 'bcrypt'
 
 export default class UserService {
 
@@ -20,9 +21,10 @@ export default class UserService {
         }
         const users = new UserModel().getModel()
         const user = await users.findOne({
-            where: {username: username, password: password}
+            where: {username: username}
         })
-        if ( user !== null ) {
+        const passwordsMatch = await bcrypt.compare(password, user.password)
+        if ( user !== null && passwordsMatch ) {
             response.data = user.dataValues
         } else {
             response.message = "Wrong username or password, or user does't exists"
