@@ -19,18 +19,23 @@ export default class UserService {
             data: {},
             status: "success"
         }
+
         const users = new UserModel().getModel()
         const user = await users.findOne({
             where: {username: username}
         })
-        const passwordsMatch = await bcrypt.compare(password, user.password)
-        if ( user !== null && passwordsMatch ) {
-            response.data = user.dataValues
-        } else {
-            response.message = "Wrong username or password, or user does't exists"
-            response.status = 'error'
-            response.data = {username, password}
-        }        
+        
+        if (user) {
+            const passwordsMatch = await bcrypt.compare(password, user.password)
+            if ( user !== null && passwordsMatch ) {
+                response.data = user.dataValues
+                return response
+            }
+        }
+
+        response.message = "Wrong username or password, or user does't exists"
+        response.status = 'error'
+        response.data = {username, password}               
         return response;
     }
 
